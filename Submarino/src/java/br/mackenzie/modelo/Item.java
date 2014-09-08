@@ -11,14 +11,15 @@ package br.mackenzie.modelo;
 public class Item {
     private Produto produto;
     private int quantidade;
-    private double preco;
+    private int codItem;
 
     public Item() {
     }
 
-    public Item(Produto produto, int quantidade) {
+    public Item(Produto produto, int quantidade, int codItem) {
         this.produto = produto;
         this.quantidade = quantidade;
+        this.codItem = codItem;
     }
 
     public Produto getProduto() {
@@ -37,14 +38,12 @@ public class Item {
         this.quantidade = quantidade;
     }
 
-    public double getPreco() {
-        return preco;
+    public int getCodItem() {
+        return codItem;
     }
 
-    public void setPreco(double preco) {
-        this.preco = preco;
+    public void setCodItem(int codItem) {
+        this.codItem = codItem;
     }
-    
-    
     
 }
