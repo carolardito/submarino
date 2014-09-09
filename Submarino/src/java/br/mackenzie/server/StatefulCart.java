@@ -4,6 +4,7 @@
  */
 package br.mackenzie.server;
 
+import br.mackenzie.modelo.Carrinho;
 import stateful.*;
 import javax.ejb.Stateful;
 
@@ -11,12 +12,12 @@ import javax.ejb.Stateful;
  *
  * @author 1147171
  */
-@Stateful(mappedName = "StatefulChat")
-public class StatefulCart implements StatefulChatRemote{
-    private String nome="Guest";
+@Stateful(mappedName = "StatefulCart")
+public class StatefulCart implements StatefulCartRemote{
+    private Carrinho carrinho = new Carrinho();
 
     @Override
-    public void enter(String name) {
+    public void adicionarProduto(String name) {
         nome=name;
         System.out.println(nome+" entrou na sala");
     

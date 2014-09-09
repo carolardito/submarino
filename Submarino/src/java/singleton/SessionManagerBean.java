@@ -17,10 +17,12 @@ import javax.servlet.http.HttpSessionListener;
  *
  * @author 1147171
  */
-@Singleton //Define que um EJB Singleton
+@Singleton //Define que um EJB Singleton //trocar o singleton por 
 @LocalBean //Não possui interface local
 @WebListener //Define um listener de sessão.
 @Startup //Inicializar quando o server subir
+
+
 public class SessionManagerBean implements HttpSessionListener{
     private int counter;
     
