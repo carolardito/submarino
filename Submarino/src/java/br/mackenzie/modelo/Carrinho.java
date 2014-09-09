@@ -48,7 +48,18 @@ public class Carrinho {
         this.codCarrinho = codCarrinho;
     }
     
+    public void adicionaItem(Item item){
+        items.add(item);
+    }
     
-
+    public void removeItem(Item item){
+        items.remove(item);
+    }
     
+    public double calculPreco(){
+        double preco = 0;
+        for (Item item : items) 
+            preco += item.getProduto().getPreco() * item.getQuantidade();
+        return preco;          
+    }
 }
