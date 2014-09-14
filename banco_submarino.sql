@@ -23,17 +23,17 @@ CREATE TABLE ceps (
 );
 
     
-CREATE TABLE lista_item (
-    cod_lista_item INT not null,
-    cod_item INT not null,
-    FOREIGN KEY (cod_item) REFERENCES submarino.item(cod_item)
-);
-
 CREATE TABLE carrinho (
      cod_carrinho INT not null primary key
         GENERATED ALWAYS AS IDENTITY
         (START WITH 1, INCREMENT BY 1),
-     cod_lista_item INT not null,
      cep INT,
      FOREIGN KEY (cep) REFERENCES submarino.ceps(cep)
+);
+
+CREATE TABLE lista_item (
+    cod_carrinho INT not null,
+    cod_item INT not null,
+    FOREIGN KEY (cod_item) REFERENCES submarino.item(cod_item),
+    FOREIGN KEY (cod_carrinho) REFERENCES submarino.carrinho(cod_carrinho)
 );
