@@ -4,7 +4,6 @@
  */
 package br.mackenzie.server;
 import br.mackenzie.modelo.Produto;
-import stateful.*;
 import javax.ejb.Remote;
 
 /**
@@ -13,11 +12,12 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface StatefulCartRemote {
-    void adicionarProduto(Produto produto, int qtde);
-    void removerProduto(Produto produto);
+    void adicionarProduto(int id, int qtde);
+    void removerProduto(int id);
     void calcularFrete(String cep);
     void calcularTotal();
-    void exibircarrinho();
-    void talk(String phrase);
-    void exit();
+    void finalizarCompra();
+    void listarProdutos();
+    void exibirCarrinho();
+
 }
