@@ -16,6 +16,16 @@ import stateful.StatefulChatRemote;
 
 public class Cliente {
     public static void main(String[] args) {
+        //começa listando todos os produtos, aí o usuário digita o código do produto que ele vai querer e quantidade
+        //se ele digitar 0 no código
+        String input = "0";
+        do {
+            //receber o input e decidir o que vai fazer
+            // L listar, I inserir, R remover, C  comprar etc
+            //lista todos os produtos
+            
+        } while(input.equals("0"));
+        
         //todo testar o carrinho
    /*     try{
             Context context=JNDIUtil.getIIOPInitialContext();
