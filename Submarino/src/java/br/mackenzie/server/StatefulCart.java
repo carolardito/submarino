@@ -5,7 +5,6 @@
 package br.mackenzie.server;
 
 import br.mackenzie.modelo.Carrinho;
-import stateful.*;
 import javax.ejb.Stateful;
 
 /**
