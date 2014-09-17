@@ -17,20 +17,39 @@ public class StatefulCart implements StatefulCartRemote{
     private Carrinho carrinho = new Carrinho();
 
     @Override
-    public void adicionarProduto(String name) {
-        nome=name;
-        System.out.println(nome+" entrou na sala");
-    
+    public void adicionarProduto(int id, int qtde) {
+        
     }
 
     @Override
-    public void exit() {
-        System.out.println(nome+" saiu da sala");
+    public void removerProduto(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-            
+
     @Override
-    public void talk(String phrase){
-        System.out.println(nome +": "+ phrase);
+    public void calcularFrete(String cep) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void calcularTotal() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void finalizarCompra() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void listarProdutos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void exibirCarrinho() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 }
