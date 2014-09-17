@@ -16,6 +16,7 @@ import stateful.StatefulChatRemote;
 
 public class Cliente {
     public static void main(String[] args) {
+        //teste
         //começa listando todos os produtos, aí o usuário digita o código do produto que ele vai querer e quantidade
         //se ele digitar 0 no código
         String input = "0";
