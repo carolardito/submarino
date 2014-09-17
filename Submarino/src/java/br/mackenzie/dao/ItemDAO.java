@@ -7,7 +7,6 @@ package br.mackenzie.dao;
 
 import br.mackenzie.jdbc.ConnectionFactory;
 import br.mackenzie.modelo.Item;
-import br.mackenzie.modelo.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
