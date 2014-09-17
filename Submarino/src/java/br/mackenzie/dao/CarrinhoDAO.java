@@ -8,6 +8,7 @@ package br.mackenzie.dao;
 import br.mackenzie.jdbc.ConnectionFactory;
 import br.mackenzie.modelo.Carrinho;
 import br.mackenzie.modelo.Cep;
+import br.mackenzie.modelo.Item;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,16 +24,23 @@ import java.util.List;
 public class CarrinhoDAO {
     private static Connection connection = null;
     
-    public void inserir(Carrinho carrinho) throws SQLException, ClassNotFoundException{
-        connection = ConnectionFactory.getInstance().getConnection();
-        
-        String sql = "INSERT INTO CARRINHO (COD_CARRINHO , COD_LISTA_ITEM, CEP) "
-                + "VALUES (? , ?, ?)";
+    public void inserir(Carrinho carrinho) throws SQLException, ClassNotFoundException{        
+        connection = ConnectionFactory.getInstance().getConnection();        
+                
+        String sql = "INSERT INTO CARRINHO (COD_CARRINHO , CEP) "
+                + "VALUES (? , ?)";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         
-        preparedStatement.setString(1, cep.getCep());
-        preparedStatement.setDouble(2, cep.getPreco());        
+        preparedStatement.setInt(1, carrinho.getCodCarrinho());
+        preparedStatement.setString(2, carrinho.getCep().getCep()); 
+        
+        for (Item  item : carrinho.getItems()) {
+            item.
+            
+        }
+        
+        
         
         preparedStatement.executeUpdate();
         
