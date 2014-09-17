@@ -7,6 +7,7 @@ package br.mackenzie.dao;
 
 import br.mackenzie.jdbc.ConnectionFactory;
 import br.mackenzie.modelo.Cep;
+import br.mackenzie.modelo.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,4 +60,23 @@ public class CepDAO {
         connection.close();
         return ceps;
     }    
+    
+    public Cep buscarPorCep(String stringCep) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        Cep cep = new Cep();
+        String sql = "SELECT * FROM CEP WHERE CEP = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();        
+        resultSet.next();
+        
+        cep.setCep(resultSet.getString("CEP"));
+        cep.setPreco(resultSet.getDouble("PRECO"));       
+        
+        preparedStatement.close();
+        resultSet.close();
+        connection.close();
+        
+        return cep;
+    }
 }

@@ -13,12 +13,12 @@ import java.util.ArrayList;
 public class Carrinho {
     private ArrayList<Item> items;
     private Cep cep;
-    private String codCarrinho;    
+    private int codCarrinho;    
 
     public Carrinho() {
     }
 
-    public Carrinho(ArrayList<Item> items, Cep cep, String codCarrinho) {
+    public Carrinho(ArrayList<Item> items, Cep cep, int codCarrinho) {
         this.items = items;
         this.cep = cep;
         this.codCarrinho = codCarrinho;
@@ -40,11 +40,11 @@ public class Carrinho {
         this.cep = cep;
     }
 
-    public String getCodCarrinho() {
+    public int getCodCarrinho() {
         return codCarrinho;
     }
 
-    public void setCodCarrinho(String codCarrinho) {
+    public void setCodCarrinho(int codCarrinho) {
         this.codCarrinho = codCarrinho;
     }
     
