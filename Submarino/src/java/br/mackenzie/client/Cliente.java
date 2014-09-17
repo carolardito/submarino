@@ -4,10 +4,14 @@
  */
 package br.mackenzie.client;
 
+import br.mackenzie.modelo.Item;
+import br.mackenzie.modelo.Produto;
 import br.mackenzie.util.JNDIUtil;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Remote;
 import javax.naming.Context;
-import stateful.StatefulChatRemote;
+import br.mackenzie.server.StatefulCartRemote;
 
 /**
  *
@@ -16,8 +20,35 @@ import stateful.StatefulChatRemote;
 
 public class Cliente {
     public static void main(String[] args) {
-        //teste
-        //começa listando todos os produtos, aí o usuário digita o código do produto que ele vai querer e quantidade
+        //teste        
+        List<Produto> lista = new ArrayList<Produto>();
+        lista = listarProdutos();        
+        String msg = "";
+        
+        int i=1;
+        
+        for(Produto aux : lista)
+        {
+            msg = msg+ Integer.toString(i)+". "+aux.getNomeProduto()+"/n"+
+                    aux.getDescricao()+"/n"+
+                    Double.toString(aux.getPreco())+"/n/n";
+            i++;
+        }
+        
+        msg = msg + "0. Sair/n/n";
+        
+        System.out.println(msg);
+        
+        System.out.println(msg);
+        
+        
+        
+        
+        
+            
+            
+            
+                //começa listando todos os produtos, aí o usuário digita o código do produto que ele vai querer e quantidade
         //se ele digitar 0 no código
         String input = "0";
         do {
@@ -39,4 +70,5 @@ public class Cliente {
         }
     */
     }
+
 }
