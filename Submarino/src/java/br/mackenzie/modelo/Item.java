@@ -45,5 +45,10 @@ public class Item {
     public void setCodItem(int codItem) {
         this.codItem = codItem;
     }
+
+    @Override
+    public String toString() {
+        return produto + "  ||  " + quantidade + "\n";
+    }
     
 }

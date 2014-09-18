@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package br.mackenzie.server;
-import br.mackenzie.modelo.Produto;
 import javax.ejb.Remote;
 
 /**
@@ -14,10 +13,10 @@ import javax.ejb.Remote;
 public interface StatefulCartRemote {
     void adicionarProduto(int id, int qtde);
     void removerProduto(int id);
-    void calcularFrete(String cep);
-    void calcularTotal();
+    String calcularFrete(String cep);
+    String calcularTotal();
     void finalizarCompra();
-    void listarProdutos();
-    void exibirCarrinho();
+    String listarProdutos();
+    String exibirCarrinho();
 
 }
