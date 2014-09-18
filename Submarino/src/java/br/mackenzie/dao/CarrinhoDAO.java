@@ -7,7 +7,6 @@ package br.mackenzie.dao;
 
 import br.mackenzie.jdbc.ConnectionFactory;
 import br.mackenzie.modelo.Carrinho;
-import br.mackenzie.modelo.Cep;
 import br.mackenzie.modelo.Item;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+    
 /**
  *
  * @author Ricardo
@@ -35,12 +35,27 @@ public class CarrinhoDAO {
         preparedStatement.setInt(1, carrinho.getCodCarrinho());
         preparedStatement.setString(2, carrinho.getCep().getCep()); 
         
+        preparedStatement.executeUpdate();
+        
+        preparedStatement.close();
+        connection.close();       
+        
         for (Item  item : carrinho.getItems()) {
-            item.
-            
+            this.inserirItemLista(item, carrinho);
         }
+    }
+
+    
+    public void inserirItemLista(Item item, Carrinho carrinho) throws SQLException, ClassNotFoundException{
+        connection = ConnectionFactory.getInstance().getConnection();
         
+        String sql = "INSERT INTO LISTA_ITEM (COD_CARRINHO , COD_ITEM) "
+                + "VALUES (? , ?)";                        
         
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        
+        preparedStatement.setInt(1, carrinho.getCodCarrinho());
+        preparedStatement.setInt(2, item.getCodItem());            
         
         preparedStatement.executeUpdate();
         
@@ -48,24 +63,54 @@ public class CarrinhoDAO {
         connection.close();       
     } 
     
-    public List<Cep> listar() throws SQLException {
+    public List<Carrinho> listar() throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        String sql = "SELECT * FROM CEPS";
+        String sql = "SELECT * FROM CARRINHO";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
-        List<Cep> ceps = new ArrayList<Cep>();
-        ceps.clear();
+        List<Carrinho> carrinhos = new ArrayList<Carrinho>();
+        carrinhos.clear();
         while (resultSet.next()){
-            Cep cep = new Cep();
-            cep.setCep(resultSet.getString("CEP"));
-            cep.setPreco(resultSet.getDouble("PRECO"));
-            
-            ceps.add(cep);                
+            CepDAO cepDAO = new CepDAO();
+            Carrinho carrinho = new Carrinho();
+            carrinho.setCodCarrinho(resultSet.getInt("COD_CARRINHO"));
+            carrinho.setCep(cepDAO.buscarPorCep(resultSet.getString("CEP")));
+            carrinho.setItems(this.listarItemLista(carrinho));
+            carrinhos.add(carrinho);                
         } 
         
         preparedStatement.close();
         resultSet.close();
         connection.close();
-        return ceps;
+        return carrinhos;
     }    
+
+    private ArrayList<Item> listarItemLista(Carrinho carrinho) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        String sql = "SELECT * FROM LISTA_ITEM WHERE COD_CARRINHO = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        
+        preparedStatement.setInt(1, carrinho.getCodCarrinho());
+        
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        List<Item> items = new ArrayList<Item>();
+        items.clear();
+        while (resultSet.next()){
+            ProdutoDAO produtoDAO = new ProdutoDAO();
+            ItemDAO itemDAO = new  ItemDAO();
+            Item item = new Item();            
+            item.setCodItem(resultSet.getInt("COD_ITEM"));
+            item.setProduto(produtoDAO.buscarPorCodigo(itemDAO.buscarPorCodigo(resultSet.getInt("COD_ITEM")).getProduto().getCodProduto());
+            carrinho.setCep(cepDAO.buscarPorCep(resultSet.getString("CEP")));
+            carrinho.setItems(this.listarItemLista(carrinho));
+            carrinhos.add(carrinho);                
+        } 
+        
+        preparedStatement.close();
+        resultSet.close();
+        connection.close();
+        return carrinhos;
+    }
 }

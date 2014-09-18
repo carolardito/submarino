@@ -6,7 +6,9 @@ package br.mackenzie.dao;
 
 
 import br.mackenzie.jdbc.ConnectionFactory;
+import br.mackenzie.modelo.Cep;
 import br.mackenzie.modelo.Item;
+import br.mackenzie.modelo.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,4 +63,26 @@ public class ItemDAO {
         connection.close();
         return items;
     }    
+    
+    public Item buscarPorCodigo(int codItem) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        Item item = new Item();
+        String sql = "SELECT * FROM ITEM WHERE COD_ITEM = ?";
+        
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();        
+        resultSet.next();
+        
+        item.setCodItem(resultSet.getInt("COD_ITEM"));
+        item.setQuantidade(resultSet.getInt("QUANTIDADE"));
+        item.setProduto(produtoDAO.buscarPorCodigo(resultSet.getInt("COD_ITEM")));       
+        
+        preparedStatement.close();
+        resultSet.close();
+        connection.close();
+        
+        return item;
+    }
 }
