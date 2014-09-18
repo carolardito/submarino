@@ -75,7 +75,7 @@ public class CarrinhoDAO {
             Carrinho carrinho = new Carrinho();
             carrinho.setCodCarrinho(resultSet.getInt("COD_CARRINHO"));
             carrinho.setCep(cepDAO.buscarPorCep(resultSet.getString("CEP")));
-            carrinho.setItems(this.listarItemLista(carrinho));
+            carrinho.setItems((ArrayList<Item>) this.listarItemLista(carrinho));
             carrinhos.add(carrinho);                
         } 
         
@@ -85,7 +85,7 @@ public class CarrinhoDAO {
         return carrinhos;
     }    
 
-    private ArrayList<Item> listarItemLista(Carrinho carrinho) throws SQLException {
+    public List<Item> listarItemLista(Carrinho carrinho) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
         String sql = "SELECT * FROM LISTA_ITEM WHERE COD_CARRINHO = ?";
         
@@ -102,15 +102,14 @@ public class CarrinhoDAO {
             ItemDAO itemDAO = new  ItemDAO();
             Item item = new Item();            
             item.setCodItem(resultSet.getInt("COD_ITEM"));
-            item.setProduto(produtoDAO.buscarPorCodigo(itemDAO.buscarPorCodigo(resultSet.getInt("COD_ITEM")).getProduto().getCodProduto());
-            carrinho.setCep(cepDAO.buscarPorCep(resultSet.getString("CEP")));
-            carrinho.setItems(this.listarItemLista(carrinho));
-            carrinhos.add(carrinho);                
+            item.setQuantidade(resultSet.getInt("QUANTIDADE"));
+            item.setProduto(produtoDAO.buscarPorCodigo(itemDAO.buscarPorCodigo(resultSet.getInt("COD_ITEM")).getProduto().getCodProduto()));                      
+            items.add(item);                
         } 
         
         preparedStatement.close();
         resultSet.close();
         connection.close();
-        return carrinhos;
+        return items;
     }
 }
