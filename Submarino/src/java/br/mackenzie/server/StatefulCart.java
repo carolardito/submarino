@@ -5,9 +5,10 @@
 package br.mackenzie.server;
 
 import br.mackenzie.dao.CarrinhoDAO;
-import br.mackenzie.dao.ItemDAO;
+import br.mackenzie.dao.CepDAO;
 import br.mackenzie.dao.ProdutoDAO;
 import br.mackenzie.modelo.Carrinho;
+import br.mackenzie.modelo.Cep;
 import br.mackenzie.modelo.Item;
 import br.mackenzie.modelo.Produto;
 import java.sql.SQLException;
@@ -45,7 +46,11 @@ public class StatefulCart implements StatefulCartRemote{
 
     @Override
     public String calcularFrete(String cep) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try { 
+            return "" + new CepDAO().buscarPorCep(cep).getPreco();
+        } catch (SQLException ex){
+            return "Erro ao buscar frete";
+        }
     }
 
     @Override
