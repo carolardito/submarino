@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -70,6 +72,7 @@ public class ProdutoDAO {
         String sql = "SELECT * FROM PRODUTO WHERE COD_PRODUTO = ?";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, produto.getCodProduto());
         ResultSet resultSet = preparedStatement.executeQuery();        
         resultSet.next();
         
@@ -83,5 +86,18 @@ public class ProdutoDAO {
         connection.close();
         
         return produto;
+    }
+    
+    public void excluir(int codProduto) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        String sql = "DELETE FROM PRODUTO WHERE COD_PRODUTO = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, codProduto);
+        preparedStatement.executeUpdate();            
+        
+        preparedStatement.close();        
+        connection.close();
+        
     }
 }
