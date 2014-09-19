@@ -13,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -27,16 +25,16 @@ public class ProdutoDAO {
     public void inserir(Produto produto ) throws SQLException, ClassNotFoundException{
         connection = ConnectionFactory.getInstance().getConnection();
         
-        String sql = "INSERT INTO PRODUTO (COD_PRODUTO , NOME_PRODUTO ,PRECO , "
+        String sql = "INSERT INTO PRODUTO ( NOME_PRODUTO ,PRECO , "
                 + "DESCRICAO) "
-                + "VALUES (? , ? , ? , ? )";
+                + "VALUES (? , ? , ?)";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         
-        preparedStatement.setInt(1, produto.getCodProduto());
-        preparedStatement.setString(2, produto.getNomeProduto());
-        preparedStatement.setDouble(3, produto.getPreco());
-        preparedStatement.setString(4, produto.getDescricao());
+        //preparedStatement.setInt(1, produto.getCodProduto());
+        preparedStatement.setString(1, produto.getNomeProduto());
+        preparedStatement.setDouble(2, produto.getPreco());
+        preparedStatement.setString(3, produto.getDescricao());
         
         preparedStatement.executeUpdate();
         
@@ -72,7 +70,7 @@ public class ProdutoDAO {
         String sql = "SELECT * FROM PRODUTO WHERE COD_PRODUTO = ?";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, produto.getCodProduto());
+        preparedStatement.setInt(1, codProduto);
         ResultSet resultSet = preparedStatement.executeQuery();        
         resultSet.next();
         

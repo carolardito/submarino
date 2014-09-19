@@ -112,4 +112,45 @@ public class CarrinhoDAO {
         connection.close();
         return items;
     }
+    
+    public void excluir(int codCarrinho) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        String sql = "DELETE FROM CARRINHO WHERE COD_CARRINHO = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, codCarrinho);
+        preparedStatement.executeUpdate();            
+        
+        preparedStatement.close();        
+        connection.close();        
+    }
+    
+    public void excluirItemLista(Carrinho carrinho, Item item) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        String sql = "DELETE FROM LISTA_ITEM WHERE COD_ITEM = ? AND COD_CARRINHO = ? ";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, item.getCodItem());
+        preparedStatement.setInt(2, carrinho.getCodCarrinho());
+        preparedStatement.executeUpdate();            
+        
+        preparedStatement.close();        
+        connection.close();        
+    }
+    
+    public void atualizar(Carrinho carrinho) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        String sql = "UPDATE CARRINHO SET CEP = ? WHERE COD_CARRINHO = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, carrinho.getCep().getCep());
+        preparedStatement.setInt(2, carrinho.getCodCarrinho());            
+        preparedStatement.executeUpdate();            
+        
+        preparedStatement.close();        
+        connection.close();                
+    }
+    
+    
+    
 }

@@ -6,9 +6,8 @@ package br.mackenzie.dao;
 
 
 import br.mackenzie.jdbc.ConnectionFactory;
-import br.mackenzie.modelo.Cep;
+import br.mackenzie.modelo.Carrinho;
 import br.mackenzie.modelo.Item;
-import br.mackenzie.modelo.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -84,5 +83,30 @@ public class ItemDAO {
         connection.close();
         
         return item;
+    }
+    
+    public void excluir(int codItem) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        String sql = "DELETE FROM ITEM WHERE COD_ITEM = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, codItem);
+        preparedStatement.executeUpdate();            
+        
+        preparedStatement.close();        
+        connection.close();        
+    }
+    
+    public void atualizar(Item item) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        String sql = "UPDATE ITEM SET QUANTIDADE = ? WHERE COD_ITEM = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, item.getQuantidade());
+        preparedStatement.setInt(2, item.getCodItem());            
+        preparedStatement.executeUpdate();            
+        
+        preparedStatement.close();        
+        connection.close();                
     }
 }

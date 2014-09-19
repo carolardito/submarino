@@ -28,8 +28,7 @@ public class CepDAO {
         String sql = "INSERT INTO CEPS (CEP , PRECO) "
                 + "VALUES (? , ?)";
         
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);        
         preparedStatement.setString(1, cep.getCep());
         preparedStatement.setDouble(2, cep.getPreco());        
         
@@ -63,9 +62,10 @@ public class CepDAO {
     public Cep buscarPorCep(String stringCep) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
         Cep cep = new Cep();
-        String sql = "SELECT * FROM CEP WHERE CEP = ?";
+        String sql = "SELECT * FROM CEPS WHERE CEP = ?";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, stringCep);
         ResultSet resultSet = preparedStatement.executeQuery();        
         resultSet.next();
         
@@ -77,5 +77,17 @@ public class CepDAO {
         connection.close();
         
         return cep;
+    }
+    
+    public void excluir(String cep) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        String sql = "DELETE FROM CEPS WHERE CEP = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, cep);
+        preparedStatement.executeUpdate();            
+        
+        preparedStatement.close();        
+        connection.close();       
     }
 }

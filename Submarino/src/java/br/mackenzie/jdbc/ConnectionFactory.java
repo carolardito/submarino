@@ -27,7 +27,7 @@ public class ConnectionFactory {
     }
     
     public Connection getConnection() throws SQLException{
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("Util.configuracao");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("br.mackenzie.util.configuracao");
         Connection connection = null;
         try {
             Class.forName(resourceBundle.getString("driver"));
