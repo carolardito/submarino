@@ -86,6 +86,28 @@ public class ProdutoDAO {
         return produto;
     }
     
+    public Produto buscarPorNome(String nomeProduto) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();
+        Produto produto = new Produto();
+        String sql = "SELECT * FROM PRODUTO WHERE NOME_PRODUTO = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, nomeProduto);
+        ResultSet resultSet = preparedStatement.executeQuery();        
+        resultSet.next();
+        
+        produto.setCodProduto(resultSet.getInt("COD_PRODUTO"));
+        produto.setNomeProduto(resultSet.getString("NOME_PRODUTO"));
+        produto.setPreco(resultSet.getDouble("PRECO"));
+        produto.setDescricao(resultSet.getString("DESCRICAO"));
+        
+        preparedStatement.close();
+        resultSet.close();
+        connection.close();
+        
+        return produto;
+    }
+    
     public void excluir(int codProduto) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
         String sql = "DELETE FROM PRODUTO WHERE COD_PRODUTO = ?";

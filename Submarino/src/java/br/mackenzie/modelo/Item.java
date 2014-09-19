@@ -11,15 +11,15 @@ package br.mackenzie.modelo;
 public class Item {
     private Produto produto;
     private int quantidade;
-    private int codItem;
+    private int codCarrinho;
 
     public Item() {
     }
 
-    public Item(Produto produto, int quantidade, int codItem) {
+    public Item(Produto produto, int quantidade, int codCarrinho) {
         this.produto = produto;
         this.quantidade = quantidade;
-        this.codItem = codItem;
+        this.codCarrinho = codCarrinho;
     }
 
     public Produto getProduto() {
@@ -38,13 +38,13 @@ public class Item {
         this.quantidade = quantidade;
     }
 
-    public int getCodItem() {
-        return codItem;
+    public int getCodCarrinho() {
+        return codCarrinho;
     }
 
-    public void setCodItem(int codItem) {
-        this.codItem = codItem;
-    }
+    public void setCodCarrinho(int codCarrinho) {
+        this.codCarrinho = codCarrinho;
+    }    
 
     @Override
     public String toString() {

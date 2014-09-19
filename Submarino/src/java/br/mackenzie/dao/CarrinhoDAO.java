@@ -7,7 +7,9 @@ package br.mackenzie.dao;
 
 import br.mackenzie.jdbc.ConnectionFactory;
 import br.mackenzie.modelo.Carrinho;
+import br.mackenzie.modelo.Cep;
 import br.mackenzie.modelo.Item;
+import br.mackenzie.modelo.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,25 +29,25 @@ public class CarrinhoDAO {
     public void inserir(Carrinho carrinho) throws SQLException, ClassNotFoundException{        
         connection = ConnectionFactory.getInstance().getConnection();        
                 
-        String sql = "INSERT INTO CARRINHO (COD_CARRINHO , CEP) "
-                + "VALUES (? , ?)";
+        String sql = "INSERT INTO CARRINHO (CEP) "
+                + "VALUES (?)";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        
-        preparedStatement.setInt(1, carrinho.getCodCarrinho());
-        preparedStatement.setString(2, carrinho.getCep().getCep()); 
+                
+        preparedStatement.setString(1, carrinho.getCep().getCep()); 
         
         preparedStatement.executeUpdate();
         
         preparedStatement.close();
         connection.close();       
         
+        ItemDAO itemDAO = new ItemDAO();
         for (Item  item : carrinho.getItems()) {
-            this.inserirItemLista(item, carrinho);
+            itemDAO.inserir(item);            
         }
     }
 
-    
+    /*
     public void inserirItemLista(Item item, Carrinho carrinho) throws SQLException, ClassNotFoundException{
         connection = ConnectionFactory.getInstance().getConnection();
         
@@ -65,12 +67,29 @@ public class CarrinhoDAO {
     
     public List<Carrinho> listar() throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        String sql = "SELECT * FROM CARRINHO";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        String sql = "SELECT * FROM CARRINHO "                
+                + "INNER JOIN CEPS "
+                + "ON CEPS.CEP = CARRINHO.CEP ";                
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);        
         ResultSet resultSet = preparedStatement.executeQuery();
         List<Carrinho> carrinhos = new ArrayList<Carrinho>();
+        List<Item> items = new ArrayList<Item>();
         carrinhos.clear();
         while (resultSet.next()){
+            Cep cep = new Cep();
+            cep.setCep(resultSet.getString("CEP"));
+            cep.setPreco(resultSet.getDouble("CEPS.PRECO"));
+            
+            for (Item item : items) {
+                
+            }
+            
+            Produto produto = new Produto();
+            produto.setCodProduto(resultSet.getInt("COD_PRODUTO"));
+            produto.setNomeProduto(resultSet.getString("NOME_PRODUTO"));
+            produto.setPreco(resultSet.getDouble("PRODUTO.PRECO"));
+            produto.setDescricao(resultSet.getString("DESCRICAO"));
+            
             CepDAO cepDAO = new CepDAO();
             Carrinho carrinho = new Carrinho();
             carrinho.setCodCarrinho(resultSet.getInt("COD_CARRINHO"));
@@ -111,7 +130,7 @@ public class CarrinhoDAO {
         resultSet.close();
         connection.close();
         return items;
-    }
+    }*/
     
     public void excluir(int codCarrinho) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
@@ -124,7 +143,7 @@ public class CarrinhoDAO {
         preparedStatement.close();        
         connection.close();        
     }
-    
+    /*
     public void excluirItemLista(Carrinho carrinho, Item item) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
         String sql = "DELETE FROM LISTA_ITEM WHERE COD_ITEM = ? AND COD_CARRINHO = ? ";
@@ -137,6 +156,7 @@ public class CarrinhoDAO {
         preparedStatement.close();        
         connection.close();        
     }
+    */
     
     public void atualizar(Carrinho carrinho) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();

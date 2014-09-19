@@ -8,6 +8,7 @@ package br.mackenzie.dao;
 import br.mackenzie.jdbc.ConnectionFactory;
 import br.mackenzie.modelo.Carrinho;
 import br.mackenzie.modelo.Item;
+import br.mackenzie.modelo.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,12 +27,13 @@ public class ItemDAO {
     public void inserir(Item item) throws SQLException, ClassNotFoundException{
         connection = ConnectionFactory.getInstance().getConnection();
         
-        String sql = "INSERT INTO ITEM (COD_ITEM , COD_PRODUTO , QUANTIDADE) "
+        String sql = "INSERT INTO ITEM (COD_PRODUTO, COD_CARRINHO, QUANTIDADE) "
                 + "VALUES (? , ? , ?)";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         
-        preparedStatement.setInt(1, item.getCodItem());
+        //preparedStatement.setInt(1, item.getCodItem());
+        preparedStatement.setInt(1, item.getProduto().getCodProduto());
         preparedStatement.setInt(2, item.getProduto().getCodProduto());
         preparedStatement.setInt(3, item.getQuantidade());        
         
@@ -43,17 +45,25 @@ public class ItemDAO {
     
     public List<Item> listar() throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        String sql = "SELECT * FROM ITEM";
+        String sql = "SELECT * FROM ITEM "
+                + "INNER JOIN PRODUTO "
+                + "ON ITEM.COD_PRODUTO = PRODUTO.COD_PRDUTO ";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
         List<Item> items = new ArrayList<Item>();
         items.clear();
         while (resultSet.next()){
-            ProdutoDAO produtoDAO = new ProdutoDAO();
-            Item item = new Item();
-            item.setCodItem(resultSet.getInt("COD_ITEM"));
-            item.setProduto(produtoDAO.buscarPorCodigo(resultSet.getInt("COD_PRODUTO")));
+            Produto produto = new Produto();            
+            produto.setCodProduto(resultSet.getInt("COD_PRODUTO"));
+            produto.setDescricao(resultSet.getString("DESCRICAO"));
+            produto.setNomeProduto(resultSet.getString("NOME_PRODUTO"));
+            produto.setPreco(resultSet.getDouble("PRECO"));
+            
+            Item item = new Item();         
+            item.setProduto(produto);
+            item.setCodCarrinho(resultSet.getInt("COD_CARRINHO"));            
             item.setQuantidade(resultSet.getInt("QUANTIDADE"));                    
+            
             items.add(item);                
         } 
         
@@ -63,20 +73,52 @@ public class ItemDAO {
         return items;
     }    
     
-    public Item buscarPorCodigo(int codItem) throws SQLException {
+    public List<Item> listarPorCarrinho(Carrinho carrinho) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        Item item = new Item();
-        String sql = "SELECT * FROM ITEM WHERE COD_ITEM = ?";
-        
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        
+        String sql = "SELECT * FROM ITEM "
+                + "INNER JOIN PRODUTO "
+                + "ON ITEM.COD_PRODUTO = PRODUTO.COD_PRDUTO "
+                + "WHERE COD_CARRINHO = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();        
-        resultSet.next();
+        preparedStatement.setInt(1, carrinho.getCodCarrinho());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<Item> items = new ArrayList<Item>();
+        items.clear();        
+            
+        while (resultSet.next()){
+               
+            Produto produto = new Produto();            
+            produto.setCodProduto(resultSet.getInt("COD_PRODUTO"));
+            produto.setDescricao(resultSet.getString("DESCRICAO"));
+            produto.setNomeProduto(resultSet.getString("NOME_PRODUTO"));
+            produto.setPreco(resultSet.getDouble("PRECO"));
+            
+            Item item = new Item();         
+            item.setProduto(produto);
+            item.setCodCarrinho(resultSet.getInt("COD_CARRINHO"));            
+            item.setQuantidade(resultSet.getInt("QUANTIDADE"));                    
+            
+            items.add(item);                
+        } 
         
-        item.setCodItem(resultSet.getInt("COD_ITEM"));
-        item.setQuantidade(resultSet.getInt("QUANTIDADE"));
-        item.setProduto(produtoDAO.buscarPorCodigo(resultSet.getInt("COD_ITEM")));       
+        preparedStatement.close();
+        resultSet.close();
+        connection.close();
+        return items;
+    }    
+    
+    public Item buscarPorCodigo(Item item) throws SQLException {
+        connection = ConnectionFactory.getInstance().getConnection();        
+        String sql = "SELECT QUANTIDADE FROM ITEM WHERE COD_PRODUTO = ? AND COD_CARRINHO = ?";
+                      
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, item.getProduto().getCodProduto());        
+        preparedStatement.setInt(2, item.getCodCarrinho());        
+        
+        ResultSet resultSet = preparedStatement.executeQuery();        
+        resultSet.next();        
+        
+        item.setQuantidade(resultSet.getInt("QUANTIDADE"));                
         
         preparedStatement.close();
         resultSet.close();
@@ -85,12 +127,13 @@ public class ItemDAO {
         return item;
     }
     
-    public void excluir(int codItem) throws SQLException {
+    public void excluir(Item item) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        String sql = "DELETE FROM ITEM WHERE COD_ITEM = ?";
+        String sql = "DELETE FROM ITEM WHERE COD_CARRINHO = ? AND COD_PRODUTO = ?";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, codItem);
+        preparedStatement.setInt(1, item.getCodCarrinho());
+        preparedStatement.setInt(2, item.getProduto().getCodProduto());
         preparedStatement.executeUpdate();            
         
         preparedStatement.close();        
@@ -99,11 +142,13 @@ public class ItemDAO {
     
     public void atualizar(Item item) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        String sql = "UPDATE ITEM SET QUANTIDADE = ? WHERE COD_ITEM = ?";
+        String sql = "UPDATE ITEM SET QUANTIDADE = ? "
+                + "WHERE COD_PRODUTO = ? AND COD_CARRINHO = ?";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, item.getQuantidade());
-        preparedStatement.setInt(2, item.getCodItem());            
+        preparedStatement.setInt(2, item.getProduto().getCodProduto());            
+        preparedStatement.setInt(3, item.getCodCarrinho());            
         preparedStatement.executeUpdate();            
         
         preparedStatement.close();        

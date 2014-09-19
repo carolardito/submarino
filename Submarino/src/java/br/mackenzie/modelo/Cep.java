@@ -15,6 +15,10 @@ public class Cep {
     public Cep() {
     }
 
+    public Cep(String cep) {
+        this.cep = cep;
+    }
+
     public Cep(String cep, double preco) {
         this.cep = cep;
         this.preco = preco;

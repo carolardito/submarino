@@ -11,11 +11,12 @@ import java.util.ArrayList;
  * @author Ricardo
  */
 public class Carrinho {
-    private ArrayList<Item> items;
+    private ArrayList<Item> items = new ArrayList<Item>();
     private Cep cep;
     private int codCarrinho;    
 
     public Carrinho() {
+        this.items.clear();
     }
 
     public Carrinho(ArrayList<Item> items, Cep cep, int codCarrinho) {
@@ -48,12 +49,36 @@ public class Carrinho {
         this.codCarrinho = codCarrinho;
     }
     
+    public void adicionaProduto(Produto produto){
+        Item item = new Item();
+        item.setProduto(produto);
+        if (items.contains(produto)){
+            item = items.get(items.indexOf(produto.getCodProduto()));
+            item.setQuantidade(item.getQuantidade() + 1);
+        }
+        else{
+            item.setQuantidade(1);
+            this.adicionaItem(item);
+        }                   
+    }
+    
     public void adicionaItem(Item item){
         items.add(item);
     }
     
     public void removeItem(Item item){
         items.remove(item);
+    }
+    
+    public void removeProduto(Produto produto){
+        Item item = new Item();        
+        if (items.contains(produto)){
+            item = items.get(items.indexOf(produto.getCodProduto()));
+            if (item.getQuantidade() <= 1)
+                this.removeItem(item);
+            else
+                item.setQuantidade(item.getQuantidade() - 1);
+        }
     }
     
     public double calculPreco(){
