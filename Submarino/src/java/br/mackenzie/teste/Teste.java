@@ -7,7 +7,7 @@ package br.mackenzie.teste;
 import br.mackenzie.dao.CepDAO;
 import br.mackenzie.dao.ProdutoDAO;
 import br.mackenzie.modelo.Carrinho;
-import br.mackenzie.modelo.Produto;
+import br.mackenzie.modelo.Item;
 import java.sql.SQLException;
 
 /**
@@ -20,10 +20,15 @@ public class Teste {
         //testando produto
         //inserindo
         /*
+        Scanner scanner = new Scanner(System.in);
+        
         Produto produto = new Produto();
-        produto.setNomeProduto("Feijão");
-        produto.setPreco(13);
-        produto.setDescricao("tipo c");
+        System.out.print("Digite nome do produto: ");
+        produto.setNomeProduto(scanner.next());
+        System.out.print("Digite Preço do produto: ");
+        produto.setPreco(scanner.nextInt());
+        System.out.print("Digite Descrição do produto: ");
+        produto.setDescricao(scanner.next());
         ProdutoDAO produtoDAO = new ProdutoDAO();      
         produtoDAO.inserir(produto);
          
@@ -147,22 +152,25 @@ public class Teste {
         */
         
         Carrinho carrinho = new Carrinho();           
-        carrinho.setCep(new CepDAO().calcularFrete("04824040"));        
-        carrinho.adicionaProduto(new ProdutoDAO().buscarPorNome("Feijão"));
-        carrinho.adicionaProduto(new ProdutoDAO().buscarPorNome("Feijão"));
-        System.out.println(carrinho.getItems().get(0).getProduto().getNomeProduto());
-        System.out.println(carrinho.getItems().get(0).getQuantidade());
-       
-        
-        
-        
-        
-        
-        
-        
-
-        
-        
+        carrinho.setCep(new CepDAO().calcularFrete("04824040"));       
+        carrinho.adicionaItem(new Item(new ProdutoDAO().buscarPorNome("Feijão"), 3));
+        carrinho.adicionaItem(new Item(new ProdutoDAO().buscarPorNome("Feijão"), 4));
+        carrinho.adicionaItem(new Item(new ProdutoDAO().buscarPorNome("Feijão")));
+        carrinho.removeItem(new Item(new ProdutoDAO().buscarPorNome("Feijão")));
+        carrinho.removeItem(new Item(new ProdutoDAO().buscarPorNome("Feijão"), 12));
+        carrinho.adicionaItem(new Item(new ProdutoDAO().buscarPorNome("Feijão")));
+        carrinho.removeItem(new Item(new ProdutoDAO().buscarPorNome("Feijão")));   
+        carrinho.adicionaItem(new Item(new ProdutoDAO().buscarPorNome("Arroz")));
+        carrinho.adicionaItem(new Item(new ProdutoDAO().buscarPorNome("Feijão")));
+        carrinho.adicionaItem(new Item(new ProdutoDAO().buscarPorNome("Feijão"), 4));
+        for (Item item : carrinho.getItems()) {
+            System.out.println("Nome = " + item.getProduto().getNomeProduto());
+            System.out.println("Preco produto = " + item.getProduto().getPreco());
+            System.out.println("Quantidade = " + item.getQuantidade());
+            System.out.println("Total Item = " + item.getProduto().getPreco() * item.getQuantidade());   
+        }        
+        System.out.println("Quantidade itens = " + carrinho.getItems().size()); 
+        System.out.println("Preço frete = " + carrinho.getCep().getPreco()); 
+        System.out.println("Total = " + carrinho.calculaPrecoTotal());
     }
-    
 }

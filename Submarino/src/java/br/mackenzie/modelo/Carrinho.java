@@ -47,44 +47,43 @@ public class Carrinho {
 
     public void setCodCarrinho(int codCarrinho) {
         this.codCarrinho = codCarrinho;
-    }
-    
-    public void adicionaProduto(Produto produto){
-        Item item = new Item();
-        item.setProduto(produto);
-        if (items.contains(produto)){
-            item = items.get(items.indexOf(produto.getCodProduto()));
-            item.setQuantidade(item.getQuantidade() + 1);
-        }
-        else{
-            item.setQuantidade(1);
-            this.adicionaItem(item);
-        }                   
-    }
-    
+    }    
+       
     public void adicionaItem(Item item){
-        items.add(item);
+        boolean ItemNaLista = false;
+        for (int i = 0; i < items.size() && ItemNaLista == false; i++) {
+            if (items.get(i).getProduto().getCodProduto() == (item.getProduto().getCodProduto())){
+                items.get(i).setQuantidade(items.get(i).getQuantidade() + item.getQuantidade());
+                ItemNaLista = true;
+            }
+        }        
+        if (ItemNaLista == false){                    
+            items.add(item);
+        }      
+        
     }
     
     public void removeItem(Item item){
-        items.remove(item);
-    }
-    
-    public void removeProduto(Produto produto){
-        Item item = new Item();        
-        if (items.contains(produto)){
-            item = items.get(items.indexOf(produto.getCodProduto()));
-            if (item.getQuantidade() <= 1)
-                this.removeItem(item);
-            else
-                item.setQuantidade(item.getQuantidade() - 1);
-        }
-    }
+        boolean ItemNaLista = false;
+        for (int i = 0; i < items.size() && ItemNaLista == false; i++) {
+            if (items.get(i).getProduto().getCodProduto() == (item.getProduto().getCodProduto())){               
+                if ((items.get(i).getQuantidade() - item.getQuantidade()) <= 1)
+                    items.remove(i); 
+                else
+                    items.get(i).setQuantidade(items.get(i).getQuantidade() - item.getQuantidade());
+                ItemNaLista = true;
+            }
+        }    
+    }   
     
     public double calculPreco(){
         double preco = 0;
         for (Item item : items) 
-            preco += item.getProduto().getPreco() * item.getQuantidade();
+            preco += item.getProduto().getPreco() * item.getQuantidade();        
         return preco;          
+    }
+    
+    public double calculaPrecoTotal(){
+        return this.calculPreco() + cep.getPreco();
     }
 }

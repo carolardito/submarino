@@ -10,12 +10,21 @@ package br.mackenzie.modelo;
  */
 public class Item {
     private Produto produto;
-    private int quantidade;
+    private int quantidade = 1;
     private int codCarrinho;
 
     public Item() {
     }
 
+    public Item(Produto produto) {
+        this.produto = produto;
+    }
+    
+    public Item(Produto produto, int quantidade) {
+        this.produto = produto;
+        this.quantidade = quantidade;
+    }
+    
     public Item(Produto produto, int quantidade, int codCarrinho) {
         this.produto = produto;
         this.quantidade = quantidade;

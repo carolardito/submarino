@@ -4,13 +4,15 @@
  */
 package br.mackenzie.modelo;
 
+import br.mackenzie.dao.CepDAO;
+
 /**
  *
  * @author Ricardo
  */
 public class Cep {    
     private String cep;
-    private double preco;
+    private double preco = 20;
 
     public Cep() {
     }
@@ -38,5 +40,5 @@ public class Cep {
 
     public void setPreco(double preco) {
         this.preco = preco;
-    }   
+    }      
 }

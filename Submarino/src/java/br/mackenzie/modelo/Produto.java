@@ -17,6 +17,12 @@ public class Produto {
     public Produto() {
     }
 
+    public Produto(String nomeProduto, double preco, String descricao) {
+        this.nomeProduto = nomeProduto;
+        this.preco = preco;
+        this.descricao = descricao;
+    }      
+
     public Produto(int codProduto, String nomeProduto, double preco, String descricao) {
         this.codProduto = codProduto;
         this.nomeProduto = nomeProduto;
