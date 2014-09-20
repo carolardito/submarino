@@ -4,13 +4,9 @@
  */
 package br.mackenzie.teste;
 
-import br.mackenzie.dao.CarrinhoDAO;
 import br.mackenzie.dao.CepDAO;
-import br.mackenzie.dao.ItemDAO;
 import br.mackenzie.dao.ProdutoDAO;
 import br.mackenzie.modelo.Carrinho;
-import br.mackenzie.modelo.Cep;
-import br.mackenzie.modelo.Item;
 import br.mackenzie.modelo.Produto;
 import java.sql.SQLException;
 
@@ -20,16 +16,17 @@ import java.sql.SQLException;
  */
 public class Teste {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        
+       
         //testando produto
         //inserindo
+        /*
         Produto produto = new Produto();
-        produto.setNomeProduto("Batata");
+        produto.setNomeProduto("Feijão");
         produto.setPreco(13);
-        produto.setDescricao("Batata c");
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        System.out.println("Inserir");
+        produto.setDescricao("tipo c");
+        ProdutoDAO produtoDAO = new ProdutoDAO();      
         produtoDAO.inserir(produto);
+         
         //listar
         System.out.println("Listar");
         for (Produto produto1 : produtoDAO.listar()) {
@@ -140,12 +137,22 @@ public class Teste {
         System.out.println("Digite a quantidade do produto: ");
         item.setQuantidade(scanner.nextInt());
         carrinho.adicionaItem(item);
-        * */
+        
         
         //item = itemDAO.buscarPorCodigo(item.getCodItem());
         carrinho.removeItem(item);                
         
         carrinhoDAO.inserir(carrinho);
+        
+        */
+        
+        Carrinho carrinho = new Carrinho();           
+        carrinho.setCep(new CepDAO().calcularFrete("04824040"));        
+        carrinho.adicionaProduto(new ProdutoDAO().buscarPorNome("Feijão"));
+        carrinho.adicionaProduto(new ProdutoDAO().buscarPorNome("Feijão"));
+        System.out.println(carrinho.getItems().get(0).getProduto().getNomeProduto());
+        System.out.println(carrinho.getItems().get(0).getQuantidade());
+       
         
         
         

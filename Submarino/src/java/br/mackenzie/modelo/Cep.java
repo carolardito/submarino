@@ -8,7 +8,7 @@ package br.mackenzie.modelo;
  *
  * @author Ricardo
  */
-public class Cep {
+public class Cep {    
     private String cep;
     private double preco;
 
@@ -38,5 +38,5 @@ public class Cep {
 
     public void setPreco(double preco) {
         this.preco = preco;
-    }
+    }   
 }

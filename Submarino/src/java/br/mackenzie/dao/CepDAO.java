@@ -61,16 +61,18 @@ public class CepDAO {
     
     public Cep buscarPorCep(String stringCep) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        Cep cep = new Cep();
+        Cep cep = null;    
+        
         String sql = "SELECT * FROM CEPS WHERE CEP = ?";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, stringCep);
         ResultSet resultSet = preparedStatement.executeQuery();        
-        resultSet.next();
-        
-        cep.setCep(resultSet.getString("CEP"));
-        cep.setPreco(resultSet.getDouble("PRECO"));       
+        while(resultSet.next())
+        {            
+            cep.setCep(resultSet.getString("CEP"));
+            cep.setPreco(resultSet.getDouble("PRECO"));       
+        }        
         
         preparedStatement.close();
         resultSet.close();
@@ -89,5 +91,29 @@ public class CepDAO {
         
         preparedStatement.close();        
         connection.close();       
+    }
+    
+    public Cep calcularFrete (String string) throws SQLException{
+        connection = ConnectionFactory.getInstance().getConnection();
+        Cep cep = new Cep();
+        cep.setPreco(20);
+        cep.setCep(string);
+        String sql = "SELECT * FROM CEPS WHERE CEP = ?";
+        
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, string);
+        ResultSet resultSet = preparedStatement.executeQuery();        
+        while(resultSet.next())
+        {          
+            cep.setCep(resultSet.getString("CEP"));
+            cep.setPreco(resultSet.getDouble("PRECO"));       
+        }        
+        
+        preparedStatement.close();
+        resultSet.close();
+        connection.close();
+        
+        return cep;
+        
     }
 }

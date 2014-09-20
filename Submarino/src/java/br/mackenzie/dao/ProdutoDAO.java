@@ -66,18 +66,20 @@ public class ProdutoDAO {
     
     public Produto buscarPorCodigo(int codProduto) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        Produto produto = new Produto();
+        Produto produto = null;
         String sql = "SELECT * FROM PRODUTO WHERE COD_PRODUTO = ?";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, codProduto);
-        ResultSet resultSet = preparedStatement.executeQuery();        
-        resultSet.next();
+        ResultSet resultSet = preparedStatement.executeQuery();  
         
-        produto.setCodProduto(resultSet.getInt("COD_PRODUTO"));
-        produto.setNomeProduto(resultSet.getString("NOME_PRODUTO"));
-        produto.setPreco(resultSet.getDouble("PRECO"));
-        produto.setDescricao(resultSet.getString("DESCRICAO"));
+        while(resultSet.next()){
+            produto = new Produto();
+            produto.setCodProduto(resultSet.getInt("COD_PRODUTO"));
+            produto.setNomeProduto(resultSet.getString("NOME_PRODUTO"));
+            produto.setPreco(resultSet.getDouble("PRECO"));
+            produto.setDescricao(resultSet.getString("DESCRICAO"));
+        }
         
         preparedStatement.close();
         resultSet.close();
@@ -88,18 +90,19 @@ public class ProdutoDAO {
     
     public Produto buscarPorNome(String nomeProduto) throws SQLException {
         connection = ConnectionFactory.getInstance().getConnection();
-        Produto produto = new Produto();
+        Produto produto = null;
         String sql = "SELECT * FROM PRODUTO WHERE NOME_PRODUTO = ?";
         
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, nomeProduto);
         ResultSet resultSet = preparedStatement.executeQuery();        
-        resultSet.next();
-        
-        produto.setCodProduto(resultSet.getInt("COD_PRODUTO"));
-        produto.setNomeProduto(resultSet.getString("NOME_PRODUTO"));
-        produto.setPreco(resultSet.getDouble("PRECO"));
-        produto.setDescricao(resultSet.getString("DESCRICAO"));
+        while (resultSet.next()){
+            produto = new Produto();        
+            produto.setCodProduto(resultSet.getInt("COD_PRODUTO"));
+            produto.setNomeProduto(resultSet.getString("NOME_PRODUTO"));
+            produto.setPreco(resultSet.getDouble("PRECO"));
+            produto.setDescricao(resultSet.getString("DESCRICAO"));
+        }
         
         preparedStatement.close();
         resultSet.close();
