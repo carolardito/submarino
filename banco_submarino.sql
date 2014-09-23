@@ -31,3 +31,10 @@ CREATE TABLE item (
     
 );
 
+INSERT INTO produto VALUES("televisão",2000,"smartv de 50 polegadas");
+INSERT INTO produto VALUES("radio",100,"radio de pilha");
+INSERT INTO produto VALUES("sofa",3000,"sofa super confortavel de super molas");
+
+INSERT INTO ceps VALUES("04836-250",20);
+INSERT INTO ceps VALUES("02038-200",40);
+INSERT INTO ceps VALUES("01050-100",30);
